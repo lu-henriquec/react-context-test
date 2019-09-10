@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import Child from './Components/Child';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { FluxoProvider } from './Context';
+
+export class App extends Component {
+  state = { 
+    step: 0,
+    dados: {}
+  };
+
+  handleContextStep = step => this.setState({ step });
+  handleContextData = data => {
+      const defaultData = this.state.dados;
+      console.log(data);
+
+      this.setState({ dados: {...defaultData, ...data} });
+  };
+
+  render() {
+      const contextValue = {
+          step: this.state.step,
+          handleContextStep: this.handleContextStep,
+          dados: this.state.dados,
+          handleContextData: this.handleContextData,
+      };
+
+
+      return (
+          <FluxoProvider value={contextValue}>
+            <Child/>
+          </FluxoProvider>
+      );
+  }
 }
 
 export default App;
